@@ -1,4 +1,3 @@
-# AIzaSyDdloHO-NCvddWIbwglv5C7ZHcYYY5Ej0A
 import pafy
 import vlc
 pf = 0
