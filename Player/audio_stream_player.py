@@ -31,6 +31,11 @@ class audio_stream_player:
             # Add to list
             self.url_queue.append(url)
 
+    def is_playing():
+        return self.player.is_playing()
+
+    def get_next_url():
+        return self.url_queue.pop()
     # Create a thread everytime a new song is played
     # Exit condition :
     # - Song is done
