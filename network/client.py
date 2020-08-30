@@ -5,7 +5,7 @@ import os
 sys.path.append(os.path.abspath(os.path.join(os.getcwd(),os.pardir)))
 from config.constants import HEADER,PORT,FORMAT,DISCONNECT_MESSAGE
 
-SERVER = '192.168.1.128'
+SERVER = '192.168.1.169'
 # This should be replaced by a static ip from raspberry
 ADDR = (SERVER, PORT)
 
