@@ -3,7 +3,6 @@ import os
 import time
 from config.constants import ROOT_DIR
 
-os.add_dll_directory(os.path.join(ROOT_DIR, "config"))
 import vlc
 
 class audio_stream_player:

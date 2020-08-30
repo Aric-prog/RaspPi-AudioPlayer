@@ -10,7 +10,7 @@ from config.constants import HEADER,PORT,FORMAT,DISCONNECT_MESSAGE,clear
 import audio_stream_player as asp
 import finished_listener as fl
 
-LOCALIP = socket.gethostbyname(socket.gethostname())
+LOCALIP = '192.168.1.169'
 ADDR = (LOCALIP,PORT)
 
 clear()
@@ -53,7 +53,7 @@ def handle_client(conn,addr):
 
 def listen_client():
     server.listen()
-    print(f"Server is listening on {LOCALIP}")
+    print("Server is listening on ",LOCALIP)
     while True:
         conn,addr = server.accept()
         thread = threading.Thread(target = handle_client, args=(conn,addr))
