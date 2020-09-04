@@ -17,29 +17,34 @@ class audio_stream_player:
         audio = pafy.new(url)
         audio_url = audio.getbestaudio().url
         audio_title = audio.title
-        return audio_url ,audio_title
+        return audio_title, audio_url
 
     def play_audio(self,url):
         try:
-            audio_url ,audio_title = self.get_audio_info(url)
+            audio_title ,audio_url = self.get_audio_info(url)
             self.playing_title = audio_title
             self.player.set_media(self.instance.media_new(audio_url))
             self.player.play()
         except ValueError:
             print("Not a valid link")
 
+    def play_next(self):
+        next_info = self.url_queue.pop(0)
+        self.playing_title = next_info[0]
+        audio_url = next_info[1]
+        self.player.set_media(self.instance.media_new(audio_url))
+        self.player.play()
+
     def queue_audio(self,url):
-        if(not self.player.is_playing()):
-            self.play_audio(url)
-        else:
-            # Add to list
-            self.url_queue.append(url)
+        title,url = self.get_audio_info(url)
+        temp = [title,url]
+        self.url_queue.append(temp)
 
     def is_playing(self):
         return self.player.is_playing()
 
     def get_next_url(self):
-        return self.url_queue.pop()
+        return self.url_queue.pop(0)[1]
 
     def get_queue(self):
         return self.url_queue

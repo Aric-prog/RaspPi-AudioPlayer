@@ -6,7 +6,7 @@ sys.path.append(os.path.abspath(os.path.join(os.getcwd(),os.pardir)))
 from config.constants import HEADER, PORT, FORMAT, DISCONNECT_MESSAGE, COMM_LIST
 import command_parser as cp
 
-SERVER = '192.168.1.169'
+SERVER = '192.168.1.128'
 # This should be replaced by a static ip from raspberry
 ADDR = (SERVER, PORT)
 
@@ -21,10 +21,10 @@ def send(msg):
 connected = True
 while connected:
     try:
-        output = input("Input text :")
+        output = input("Input text : ")
         if output == DISCONNECT_MESSAGE:
             connected = False
-        elif(parser()):
+        elif(parser.separate(output)):
             send(output)
     except ConnectionResetError:
         print("Connection was reset, terminating program.")

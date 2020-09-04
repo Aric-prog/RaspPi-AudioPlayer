@@ -1,7 +1,10 @@
 import validators
 from config.constants import COMM_LIST, DISCONNECT_MESSAGE
+
 class command_parser():
     def separate(self,command):
+        # Commands that doesn't need arguments
+        COMM_NO_ARGS = ['skip', DISCONNECT_MESSAGE, 'q','queue']
         syntax = command.strip()
         arg = ""
         
@@ -16,13 +19,13 @@ class command_parser():
                 break
             syntax_len += 1
         
-        if syntax == DISCONNECT_MESSAGE or syntax == "-skip":
+        if syntax in COMM_NO_ARGS:
             return syntax, arg
-        elif arg == "":
-            print("Must have argument after command. (URL or keyword)")
-            return False
         elif syntax not in COMM_LIST:
             print("Unknown command")
+            return False
+        elif arg == "":
+            print("Must have argument after command. (URL or keyword)")
             return False
         else:
             return syntax,arg

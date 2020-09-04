@@ -12,7 +12,7 @@ import command_handler as ch
 import audio_stream_player as asp
 import finished_listener as fl
 
-LOCALIP = '192.168.1.169'
+LOCALIP = '192.168.1.128'
 ADDR = (LOCALIP,PORT)
 
 clear()
@@ -25,32 +25,27 @@ server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server.bind(ADDR)
 
 player = asp.audio_stream_player()
-observer = threading.Thread(name = 'daemon_listener', target = fl.start_listen, args = (player,))
+comm_handler = ch.command_handler(player)
+
+observer = threading.Thread(name = 'daemon_listener', target = fl.start_listen, args = (player,comm_handler,))
 observer.setDaemon(1)
 observer.start()
 
-parser = cp.command_parser()
-
-def player_command(url):
-    if(url == "skip"):
-        player.stop()
-        clear()
-    elif(url == DISCONNECT_MESSAGE):
-        running = False
-    else:
-        player.queue_audio(url)
-        clear()
 
 def handle_client(conn,addr):
     print("New Connection " ,addr, "connected.")
     connected = True
-    while connected:
-        msg = conn.recv(HEADER).decode(FORMAT)
-        if msg == DISCONNECT_MESSAGE:
-            connected = False
-        player_command(msg)
-        print(addr,", queued : ", msg)
-        print("Currently playing : ", player.playing_title)
+    try:
+        while connected:
+            msg = conn.recv(HEADER).decode(FORMAT)
+            if msg == DISCONNECT_MESSAGE:
+                connected = False
+            comm_handler.accept_command(msg)
+            comm_handler.show_queue()
+            print(addr,", queued : ", msg)
+            print("Currently playing : ", player.playing_title)
+    except ConnectionResetError:
+        print("Connection error", addr ,", client disconnected")
     conn.close()
 
 def listen_client():
