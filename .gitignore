@@ -1,3 +1,7 @@
 __pycache__/
+<<<<<<< HEAD
 playground2.py
 test.py
+=======
+*.pyc
+>>>>>>> 95975228027c2d8202d5587f3020e6bddcc16947
