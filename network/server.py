@@ -7,6 +7,8 @@ import sys
 sys.path.append(os.path.abspath(os.path.join(os.getcwd(),os.pardir)))
 from config.constants import HEADER,PORT,FORMAT,DISCONNECT_MESSAGE,clear
 
+import command_parser as cp
+import command_handler as ch
 import audio_stream_player as asp
 import finished_listener as fl
 
@@ -23,18 +25,18 @@ server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server.bind(ADDR)
 
 player = asp.audio_stream_player()
-listener = threading.Thread(name = 'daemon_listener', target = fl.start_listen, args = (player,))
-listener.setDaemon(1)
-listener.start()
+observer = threading.Thread(name = 'daemon_listener', target = fl.start_listen, args = (player,))
+observer.setDaemon(1)
+observer.start()
+
+parser = cp.command_parser()
 
 def player_command(url):
     if(url == "skip"):
         player.stop()
         clear()
-    elif(url == "terminate"):
-        running = False
     elif(url == DISCONNECT_MESSAGE):
-        pass
+        running = False
     else:
         player.queue_audio(url)
         clear()

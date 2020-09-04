@@ -24,7 +24,7 @@ class audio_stream_player:
             audio_url ,audio_title = self.get_audio_info(url)
             self.playing_title = audio_title
             self.player.set_media(self.instance.media_new(audio_url))
-            self.player.play()  
+            self.player.play()
         except ValueError:
             print("Not a valid link")
 
